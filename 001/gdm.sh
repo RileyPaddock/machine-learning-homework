@@ -1,0 +1,2 @@
+julia gradient_descent_minimization.jl
+python gradient_descent_minimization.py
