@@ -11,8 +11,8 @@ def RSS(b0, b1, points):
     return sum_squared_error
 
 def d_dx(points, b0,b1,h):
-    db_0 = (RSS(b0+h,b1, points)-RSS(b0-h,b1, points))/2*h
-    db_1 = (RSS(b0,b1+h, points)-RSS(b0,b1-h, points))/2*h
+    db_0 = (RSS(b0+h,b1, points)-RSS(b0-h,b1, points))/(2*h)
+    db_1 = (RSS(b0,b1+h, points)-RSS(b0,b1-h, points))/(2*h)
     return (db_0,db_1)
 
 def step(points, steps, alpha, h, b0, b1):
@@ -29,7 +29,7 @@ print("Python:")
 times = 0
 for _ in range(10):
     start = time.time()
-    result = step([(0,0),(1,1),(2,4)], 2, 0.001, 0.1, 1,2)
+    result = step([(0,0),(1,1),(2,4)], 2, 0.001, 0.1, 0,2)
     print("\t "+str(result))
     times += time.time()-start
 print("\tTime: "+str(times/10))
