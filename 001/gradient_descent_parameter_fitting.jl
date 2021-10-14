@@ -31,7 +31,7 @@ print("Julia:")
 global times = 0
 for _ in 1:10
     start = time_ns()
-    result = step([ 0 0; 1 1; 2 4], 2, 0.001, 0.1, 0,2)
+    result = step([ 0 0; 1 1; 2 4], 2, 0.001, 0.1, 1,2)
     print("\n\t ")
     print(result)
     global times += time_ns()-start

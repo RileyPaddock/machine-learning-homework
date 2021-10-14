@@ -14,7 +14,7 @@ def d_dx(x,y, h = 0.1):
     d_y = (f(x, y+h) - f(x,y-h))/(2*h)
     return (d_x, d_y)
 
-def step(x_0,y_0, a, steps = 1000):
+def step(x_0,y_0, a, steps = 2):
     for _ in range(steps):
         x_prime,y_prime = d_dx(x_0, y_0)
         x_1 = x_0 - a*x_prime

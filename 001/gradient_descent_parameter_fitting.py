@@ -29,7 +29,7 @@ print("Python:")
 times = 0
 for _ in range(10):
     start = time.time()
-    result = step([(0,0),(1,1),(2,4)], 2, 0.001, 0.1, 0,2)
+    result = step([(0,0),(1,1),(2,4)], 2, 0.001, 0.1, 1,2)
     print("\t "+str(result))
     times += time.time()-start
 print("\tTime: "+str(times/10))
