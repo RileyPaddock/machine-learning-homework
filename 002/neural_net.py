@@ -66,27 +66,18 @@ class Network:
       else:
         return self.neurons[i].activation_function(result)
 
-  def dE_dw(self, weight, point, neuron_gradients):
-    return neuron_gradients[weight[1]]*self.dn_dw(weight[1], weight, point)
+  def dE_dw(self, weight, point, neuron_gradients, weight_gradients):
+    return neuron_gradients[weight[1]]*weight_gradients[weight]
 
-  def dE_dn(self,node, point, neuron_gradients):
+  def dE_dn(self,node, point, neuron_gradients, intermediete_gradients):
     if node == self.output:
       return self.activation_derivative(self.f(self.output, point, False))
     else:
       succesors = [key[1] for key in self.weights if key[0] == node]
       result = 0
       for succesor in succesors:
-        if succesor in neuron_gradients:
-          result += neuron_gradients[succesor]*self.dn_dn(succesor, node, point)
-        else:
-          result += self.dE_dn(succesor, point)*self.dn_dn(succesor, node, point)
+          result += neuron_gradients[succesor]*intermediete_gradients[(node, succesor)]
       return result
-
-  def dn_dn(self,node_1, node_2, point):
-    return self.f(node_1, point, True)*self.weights[(node_2, node_1)]
-  
-  def dn_dw(self, node, weight, point):
-    return self.f(node, point, True)*self.f(weight[0], point)
 
   def update_weights(self):
     new_weights = {key:0 for key in self.weights}
@@ -102,9 +93,16 @@ class Network:
       weight_sum = 0
       for point in relevant_points:
         neuron_gradients = {}
+        intermediete_gradients = {}
+        intermediete_weight_gradients = {}
+        for weight in self.weights:
+          intermediete_gradients[weight] = self.f(weight[1], point, True)*self.weights[(weight[1], weight[0])]
+          intermediete_weight_gradients[weight] = self.f(weight[1], point, True)*self.f(weight[0], point)
         for i in range(self.output, -1, -1):
-          neuron_gradients[i] = self.dE_dn(i,point, neuron_gradients)
-        weight_sum += self.dE_dw(edge, point, neuron_gradients)
+          neuron_gradients[i] = self.dE_dn(i,point,neuron_gradients, intermediete_gradients)
+        
+
+        weight_sum += self.dE_dw(edge, point, neuron_gradients, intermediete_weight_gradients)
       new_weights[edge] = self.weights[edge] - 0.01*weight_sum
 
     self.weights = new_weights

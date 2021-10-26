@@ -1,2 +1,2 @@
 language = "python"
-run = " python 002/neural_net.py"
+run = " python 003/synthetic_data.py"
